@@ -56,7 +56,7 @@ export const FormPersonalData: FC<RegisterFormProps> = ({ activeStep, handleNext
         <form onSubmit={handleSubmit(onSubmit)}>
           <ControlledInput name={"name"} label={"Name"} />
           <ControlledInput name={"lastname"} label={"Last Name"} />
-          <ControlledInput name={"email"} label={"Email"} />
+          <ControlledInput name={"email"} label={"Email"} type={"email"} />
         </form>
       </FormProvider>
       <StepperNavigation 

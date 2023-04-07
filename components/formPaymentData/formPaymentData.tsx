@@ -111,7 +111,7 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <ControlledInput name={"nameOnCard"} label={"Name On Card"} />
-            <ControlledInput name={"number"} label={"Number"} />
+            <ControlledInput name={"number"} label={"Number"} type={"password"} />
             <Grid container spacing={2}>
               <Grid item>
                 <ControlledInput name={"expDate"} label={"Expedition Date"} />
