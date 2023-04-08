@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FormDeliveryData } from "dh-marvel/components/formDeliveryData/formDeliveryData";
 import { FormPaymentData } from "dh-marvel/components/formPaymentData/formPaymentData";
@@ -32,10 +32,10 @@ mockUseOrder.mockReturnValue({
   state: {
     order: {
       card: {
-        number: "42424242 4242 4242",
+        number: "1234567890123456",
         cvc: "123",
-        expDate: "02/28",
-        nameOnCard: "TEST USER",
+        expDate: "01/31",
+        nameOnCard: "TEST CREDIT CARD",
       },
     },
   } as unknown as OrderState,
@@ -97,15 +97,15 @@ describe("Payment data form", () => {
       );
       userEvent.type(
         screen.getByRole("textbox", { name: "Name On Card" }),
-        "TEST USER"
+        "TEST CREDIT CARD"
       );
       userEvent.type(
-        screen.getByRole("textbox", { name: "Number" }),
-        "42424242 4242 4242"
+        screen.getByTestId("password"),
+        "1234567890123456"
       );
       userEvent.type(
         screen.getByRole("textbox", { name: "Expedition Date" }),
-        "02/28"
+        "01/31"
       );
       userEvent.type(screen.getByRole("textbox", { name: "CVC" }), "123");
 
@@ -116,13 +116,63 @@ describe("Payment data form", () => {
       });
       expect(mockDispatch).toBeCalledWith({
         payload: {
-          number: "4242424242424242",
+          number: "1234567890123456",
           cvc: "123",
-          expDate: "02/28",
-          nameOnCard: "TEST USER",
+          expDate: "01/31",
+          nameOnCard: "TEST CREDIT CARD",
         },
         type: "SET_CARD",
       });
     });
   });
+
+  describe("clear the name on card", () => {
+    it("should show error messages", async () => {
+      const mockHandleNext = jest.fn();
+      const mockHandleBack = jest.fn();
+      render(
+        <OrderProvider>
+          <FormPaymentData
+            activeStep={0}
+            handleNext={mockHandleNext}
+            onPrevClick={mockHandleBack}
+            idSnackbar={undefined}
+          />
+        </OrderProvider>
+      );
+
+      const nameOnCardInput = screen.getByRole("textbox", { name: "Name On Card" });
+      fireEvent.change(nameOnCardInput, { target: {value: ""} } )
+
+      const buttonN = screen.getByRole("button", { name: "Finish" });
+      fireEvent.click(buttonN);
+
+      const errorMessage = screen.getByText(/required/i);
+      // const errorMessage = document.getElementsByClassName("css-zc7vzp-MuiFormHelperText-root");
+
+      // await waitFor(() => {
+      //   expect(mockHandleNext).toBeCalled();
+      // });
+      // await waitFor(() => {
+      //   console.log('errorMessage', errorMessage);
+        
+      //   expect(errorMessage).toBeInTheDocument();
+      // });
+      // await waitFor(() => {
+      //   expect(mockDispatch).toBeCalledWith({
+      //     payload: {
+      //       number: "1234567890123456",
+      //       cvc: "123",
+      //       expDate: "01/31",
+      //       nameOnCard: "",
+      //     },
+      //     type: "SET_CARD",
+      //   });
+      // })
+      
+    });
+
+  });
+
+
 });

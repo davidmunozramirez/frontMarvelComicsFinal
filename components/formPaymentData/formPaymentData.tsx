@@ -32,13 +32,13 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
   const methods = useForm<PaymentDataType>({
     resolver: yupResolver(PaymentSchema),
     defaultValues: {
-      number: "4242424242424242",
+      number: "1234567890123456",
       cvc: "123",
-      expDate: "02/28",
-      nameOnCard: "TEST USER",
+      expDate: "01/31",
+      nameOnCard: "TEST CREDIT CARD",
     },
   });
-  const { watch, setFocus, handleSubmit } = methods;
+  const { watch, setFocus, handleSubmit, register, formState: { errors } } = methods;
   const number = watch("number");
   const cvc = watch("cvc");
   const expDate = watch("expDate");
@@ -110,14 +110,32 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
 
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <ControlledInput name={"nameOnCard"} label={"Name On Card"} />
-            <ControlledInput name={"number"} label={"Number"} type={"password"} />
+            <ControlledInput
+              // name={"nameOnCard"}
+              {...register("nameOnCard", {required: true} )}
+              label={"Name On Card"}
+              inputProps={{"data-testid": "nameOnCard"}} />
+            {errors["nameOnCard"]?.type === "required" && <p>This field is required</p> }
+            <ControlledInput
+              // name={"number"}
+              {...register("number", {required: true} )}
+              label={"Credit Card"}
+              type={"password"}
+              inputProps={{"data-testid": "password"}} />
             <Grid container spacing={2}>
               <Grid item>
-                <ControlledInput name={"expDate"} label={"Expedition Date"} />
+                <ControlledInput
+                  // name={"expDate"}
+                  {...register("expDate", {required: true} )}
+                  label={"Expedition Date"}
+                  inputProps={{"data-testid": "expDate"}}/>
               </Grid>
               <Grid item>
-                <ControlledInput name={"cvc"} label={"CVC"} />
+                <ControlledInput
+                  // name={"cvc"}
+                  {...register("cvc", {required: true} )}
+                  label={"CVC"}
+                  inputProps={{"data-testid": "cvc"}}/>
               </Grid>
             </Grid>
           </form>
@@ -131,7 +149,7 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
           <h1>Validate your payment data</h1>
           Name: {nameOnCard}
           <br />
-          Number: {number}
+          Number: {number.replace(number[0], "*").replace(number[1], "*").replace(number[2], "*").replace(number[3], "*").replace(number[4], "*").replace(number[5], "*").replace(number[6], "*").replace(number[7], "*").replace(number[8], "*").replace(number[9], "*").replace(number[10], "*").replace(number[11], "*")}
           <br />
           Expiration date: {expDate}
           <br />

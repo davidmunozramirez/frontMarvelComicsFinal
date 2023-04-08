@@ -7,6 +7,7 @@ type ControlledTextInputProps = {
   label: string;
   defaultValue?: string;
   type?: string; 
+  inputProps?: object;
 };
 
 const ControlledInput: FC<ControlledTextInputProps> = ({
@@ -14,6 +15,7 @@ const ControlledInput: FC<ControlledTextInputProps> = ({
   label,
   defaultValue,
   type,
+  inputProps,
 }: ControlledTextInputProps) => {
   const { control } = useFormContext();
   const {
@@ -30,6 +32,7 @@ const ControlledInput: FC<ControlledTextInputProps> = ({
     <Box mb={2}>
       <TextField
         {...register(name)}
+        inputProps={inputProps}
         type={type}
         onChange={onChange}
         value={value}
