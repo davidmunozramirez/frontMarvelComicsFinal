@@ -23,14 +23,14 @@ export const FormDeliveryData: FC<RegisterFormProps> = ({
   const methods = useForm<DeliveryDataType>({
     resolver: yupResolver(DeliverytSchema),
     defaultValues: {
-      address1: "Siempre Viva 123",
-      address2: "AV 45",
-      city: "Buenos Aires",
-      state: "BA",
-      zipCode: "1417",
+      address1: "Test main address",
+      address2: "Test address complement",
+      city: "Test City",
+      state: "Test State",
+      zipCode: "1234",
     },
   });
-  const { watch, setFocus, handleSubmit } = methods;
+  const { watch, setFocus, handleSubmit, register } = methods;
   const address1 = watch("address1");
   const address2 = watch("address2");
   const city = watch("city");
@@ -49,20 +49,41 @@ export const FormDeliveryData: FC<RegisterFormProps> = ({
     onPrevClick();
   };
 
+  useEffect(() => {
+    setFocus("address1");
+  }, []);
+
+
   return (
     <Box sx={{ m: 2 }}>
       <Stack spacing={2}>
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <ControlledInput name={"address1"} label={"Address 1"} />
-            <ControlledInput name={"address2"} label={"Address 2"} />
-            <ControlledInput name={"city"} label={"City"} />
+            <ControlledInput
+              name={"address1"}
+              // {...register("address1", {required: true})}
+              label={"Address 1"} />
+            <ControlledInput
+              name={"address2"}
+              // {...register("address2", {required: false})}
+              label={"Address 2"} />
+            <ControlledInput
+              name={"city"}
+              // {...register("city", {required: true})}
+              label={"City"} />
             <Grid container spacing={2}>
               <Grid item>
-                <ControlledInput name={"state"} label={"State"} />
+                <ControlledInput
+                  name={"state"}
+                  // {...register("state", {required: true})}
+                  label={"State"} />
               </Grid>
               <Grid item>
-                <ControlledInput name={"zipCode"} label={"Zip Code"} />
+                <ControlledInput
+                  name={"zipCode"}
+                  // {...register("zipCode", {required: true})}
+                  // type={"number"}
+                  label={"Zip Code"} />
               </Grid>
             </Grid>
           </form>
@@ -74,15 +95,11 @@ export const FormDeliveryData: FC<RegisterFormProps> = ({
         />
         <div>
           <h1>Validate your delivery data</h1>
-          Address 1: {address1}
-          <br />
-          Address 2: {address2}
-          <br />
-          City: {city}
-          <br />
-          State: {state}
-          <br />
-          Zip Code: {zipCode}
+          <h4>Address 1: {address1}</h4>
+          <h4>Address 2: {address2}</h4>
+          <h4>City: {city}</h4>
+          <h4>State: {state}</h4>
+          <h4>Zip Code: {zipCode}</h4>
         </div>
       </Stack>
     </Box>

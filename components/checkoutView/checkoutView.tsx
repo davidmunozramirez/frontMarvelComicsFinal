@@ -56,8 +56,7 @@ export const CheckoutView: FC<props> = ({
   };
 
   const handlefinal = (id: any) => {
-    // router.push(`/confirmation/${id}`);
-    console.log("a la ruta");
+    router.push(`/confirmation/${id}`);
   };
 
   return (

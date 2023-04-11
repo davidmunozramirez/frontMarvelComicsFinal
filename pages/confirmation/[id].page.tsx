@@ -22,12 +22,13 @@ interface props {
  */
 const Confirmation: NextPage<props> = ({ data }) => {
   const { state } = useOrder();
-  console.log("este state en el purchase ocnfirmation", state.order.customer);
+
+  console.log("este state", state);
   if (!data) {
     return <></>;
   }
   const customer1: any = Object.values(Object.keys(state.order)[0]);
-  console.log("este es customer1", customer1);
+  // console.log("este es customer1", customer1);
 
   return (
     <LayoutCheckout>
@@ -44,12 +45,12 @@ const Confirmation: NextPage<props> = ({ data }) => {
             title={data.title}
             name={state.order.customer.name}
             email={state.order.customer.email}
-            address1={state.order.customer.address1}
-            city={state.order.customer.address1}
+            address1={state.order.customer.address.address1}
+            city={state.order.customer.address.city}
             image={data.thumbnail.path + "." + data.thumbnail.extension}
             price={data.price}
             lastname={state.order.customer.lastname}
-            state={state.order.customer.address1}
+            state={state.order.customer.address.state}
           ></PurchaseConfirm>
           <CardContent sx={{ p: 2, border: 4, borderColor: "green" }}>
             <Typography
@@ -72,7 +73,7 @@ export async function getServerSideProps(context: { query: { id: any } }) {
   const { id } = context.query;
   const res = await getComic(id);
 
-  console.log(res);
+  // console.log(res);
 
   return { props: { data: res } };
 }

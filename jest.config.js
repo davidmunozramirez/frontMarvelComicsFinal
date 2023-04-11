@@ -27,6 +27,7 @@ const customJestConfig = {
         'features/**/*.tsx',
         'pages/**/*.route.ts',
         'pages/**/*.page.tsx',
+        'pages/checkout/*.page.tsx',
         'services/**/*.ts',
         '!pages/_app.page.tsx',
         '!pages/_document.page.tsx',
@@ -40,7 +41,7 @@ const customJestConfig = {
             lines: 50,
             statements: 50
         },
-        "./services/checkout": {
+        "./components/checkoutView": {
             branches: 90,
             functions: 90,
             lines: 90,

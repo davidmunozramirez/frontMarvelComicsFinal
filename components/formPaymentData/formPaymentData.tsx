@@ -39,10 +39,10 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
     },
   });
   const { watch, setFocus, handleSubmit, register, formState: { errors } } = methods;
+  const nameOnCard = watch("nameOnCard");
   const number = watch("number");
   const cvc = watch("cvc");
   const expDate = watch("expDate");
-  const nameOnCard = watch("nameOnCard");
 
   const onSubmit = (data: PaymentDataType) => {
     dispatch({
@@ -56,16 +56,16 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
   };
 
   useEffect(() => {
-    console.log("dentro del use effect", infoSnackbar);
+    // console.log("dentro del use effect", infoSnackbar);
 
     if (infoSnackbar?.error) {
-      console.log("bsatman", infoSnackbar);
+      // console.log("bsatman", infoSnackbar);
 
       setMessageSnackbar(infoSnackbar?.message);
       setOpenSnackbar(true);
     }
     if (infoSnackbar?.data) {
-      console.log("dentro del if del use effect", infoSnackbar);
+      // console.log("dentro del if del use effect", infoSnackbar);
 
       const handledData = { inital: infoSnackbar.data, data: idSnackbar };
       router.push(
@@ -75,14 +75,14 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
         });
     }
   }, [infoSnackbar]);
-  console.log("fuera del use effect", infoSnackbar);
+  // console.log("fuera del use effect", infoSnackbar);
 
   const handleonPrevClick = () => {
     onPrevClick();
   };
 
   useEffect(() => {
-    setFocus("number");
+    setFocus("nameOnCard");
   }, []);
 
   const handleClose = (
@@ -115,7 +115,10 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
               {...register("nameOnCard", {required: true} )}
               label={"Name On Card"}
               inputProps={{"data-testid": "nameOnCard"}} />
-            {errors["nameOnCard"]?.type === "required" && <p>This field is required</p> }
+            {errors["nameOnCard"]?.type === "required"
+            && <div data-testid="requiredNameOnCard">
+              <h6>This field is required</h6>
+            </div> }
             <ControlledInput
               // name={"number"}
               {...register("number", {required: true} )}
@@ -127,13 +130,14 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
                 <ControlledInput
                   // name={"expDate"}
                   {...register("expDate", {required: true} )}
-                  label={"Expedition Date"}
+                  label={"Expiration Date (MM/YY)"}
                   inputProps={{"data-testid": "expDate"}}/>
               </Grid>
               <Grid item>
                 <ControlledInput
                   // name={"cvc"}
                   {...register("cvc", {required: true} )}
+                  // type={"number"}
                   label={"CVC"}
                   inputProps={{"data-testid": "cvc"}}/>
               </Grid>
@@ -142,18 +146,22 @@ export const FormPaymentData: FC<RegisterFormProps> = ({
         </FormProvider>
         <StepperNavigation
           activeStep={activeStep}
-          onPrevClick={handleSubmit(handleonPrevClick)}
+          // onPrevClick={handleSubmit(handleonPrevClick)}
+          onPrevClick={handleonPrevClick}
           onNextClick={handleSubmit(onSubmit)}
         />
         <div>
           <h1>Validate your payment data</h1>
-          Name: {nameOnCard}
-          <br />
+          <h4>Name: {nameOnCard}</h4>
+          <h4>
           Number: {number.replace(number[0], "*").replace(number[1], "*").replace(number[2], "*").replace(number[3], "*").replace(number[4], "*").replace(number[5], "*").replace(number[6], "*").replace(number[7], "*").replace(number[8], "*").replace(number[9], "*").replace(number[10], "*").replace(number[11], "*")}
-          <br />
+          </h4>
+          <h4>
           Expiration date: {expDate}
-          <br />
+          </h4>
+          <h4>
           CVC: {cvc}
+          </h4>
         </div>
       </Stack>
     </Box>

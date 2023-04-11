@@ -16,8 +16,14 @@ function renderWithReactHookForm(ui: ReactElement, {defaultValues = {}} = {}) {
 describe('ControlledTextInput', () => {
     describe('when rendering default', () => {
         it('should render a textbox', () => {
-            renderWithReactHookForm(<ControlledInput name="firstname" label="Firstname" />);
+            renderWithReactHookForm(<ControlledInput
+                name="firstname"
+                // name="name"
+                label="Firstname"
+                // label="Name"
+            />);
             const textbox = screen.getByRole('textbox', {'name': 'Firstname'})
+            // const textbox = screen.getByRole('textbox', {'name': 'name'})
             expect(textbox).toBeInTheDocument();
             expect(textbox).toHaveValue('');
         })

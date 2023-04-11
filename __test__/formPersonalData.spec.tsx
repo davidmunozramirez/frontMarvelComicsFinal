@@ -69,14 +69,14 @@ describe("Personal data form", () => {
           <FormPersonalData activeStep={0} handleNext={mockHandleNext} />
         </OrderProvider>
       );
-      userEvent.type(screen.getByRole("textbox", { name: "Name" }), "Test");
+      userEvent.type(screen.getByRole("textbox", { name: "Name" }), "Test Name");
       userEvent.type(
         screen.getByRole("textbox", { name: "Last Name" }),
-        "User"
+        "Test Last Name"
       );
       userEvent.type(
         screen.getByRole("textbox", { name: "Email" }),
-        "test@user.com"
+        "testemail@email.com"
       );
       userEvent.click(screen.getByRole("button", { name: "Next" }));
 
@@ -85,12 +85,40 @@ describe("Personal data form", () => {
       });
       expect(mockDispatch).toBeCalledWith({
         payload: {
-          email: "test@user.com",
-          lastname: "User",
-          name: "Test",
+          name: "Test Name",
+          lastname: "Test Last Name",
+          email: "testemail@email.com",
         },
         type: "SET_CUSTOMER",
       });
     });
   });
+
+  describe("checking some texts", () => {
+    it("shpuld show texts at the buttom", async () => {
+      const mockHandleNext = jest.fn();
+      render(
+        <OrderProvider>
+          <FormPersonalData activeStep={0} handleNext={mockHandleNext} />
+        </OrderProvider>
+      );
+      userEvent.type(screen.getByRole("textbox", { name: "Name" }), "Test Name");
+      userEvent.type(
+        screen.getByRole("textbox", { name: "Last Name" }),
+        "Test Last Name"
+      );
+      userEvent.type(
+        screen.getByRole("textbox", { name: "Email" }),
+        "testemail@email.com"
+      );
+      // userEvent.click(screen.getByRole("button", { name: "Next" }));
+
+      await waitFor(() => {
+        expect(screen.queryByText("Name: Test Name")).toBeInTheDocument();
+        expect(screen.queryByText(/Last Name: Test Last Name/i)).toBeInTheDocument();
+        expect(screen.queryByText("Email: testemail@email.com")).toBeInTheDocument();
+      });
+    });
+  });
+
 });
